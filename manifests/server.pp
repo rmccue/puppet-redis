@@ -78,7 +78,7 @@ class redis::server($ensure=present,
       recurse => true,
       purge => true,
       force => true,
-      before => User["redis"],
+      before => Group["redis"],
     }
   }
 
