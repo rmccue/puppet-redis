@@ -10,34 +10,19 @@ class redis::server($version='2.2.7',
                     $aof_rewrite_minute=30) {
 
   $bin_dir = '/usr/local/bin'
-  $redis_src = "/usr/local/src/redis-${version}"
-
-  @package { "build-essential":
-    ensure => present,
-  }
-
-  realize(Package["build-essential"])
-
-  file { $redis_src:
-    ensure => "directory",
-  }
-
-  exec { "fetch redis ${version}": 
-    command => "curl -sL https://github.com/antirez/redis/tarball/${version} | tar --strip-components 1 -xz",
-    cwd => $redis_src,
-    creates => "${redis_src}/Makefile",
-    require => File[$redis_src],
-  }
-
-  exec { "install redis ${version}":
-    command => "make && /etc/init.d/redis-server stop && make install PREFIX=/usr/local",
-    cwd => "${redis_src}/src",
-    unless => "test `redis-server --version | cut -d ' ' -f 4` = '${version}'",
-    require => [Exec["fetch redis ${version}"], Package["build-essential"]]
-  }
-
   $redis_home = "/var/lib/redis"
   $redis_log = "/var/log/redis"
+
+  redis::install { $version: }
+
+  file { "/etc/redis":
+    ensure => directory,
+  }
+
+  file { "/etc/redis/redis.conf":
+    content => template("redis/redis.conf.erb"),
+    require => [Redis::Install[$version], File["/etc/redis"]],
+  }
 
   group { "redis":
     ensure => present,
@@ -62,15 +47,6 @@ class redis::server($version='2.2.7',
     require => User["redis"],
   }
 
-  file { "/etc/redis":
-    ensure => directory,
-  }
-
-  file { "/etc/redis/redis.conf":
-    content => template("redis/redis.conf.erb"),
-    require => [Exec["install redis ${version}"], File["/etc/redis"]],
-  }
-
   file { "/etc/init.d/redis-server":
     source => "puppet:///modules/redis/redis-server.init",
     mode => 744,
@@ -87,7 +63,7 @@ class redis::server($version='2.2.7',
     hasrestart => true,
     subscribe => [File["/etc/init.d/redis-server"],
                   File["/etc/redis/redis.conf"],
-                  Exec["install redis ${version}"]],
+                  Redis::Install[$version]],
   }
 
   $redis_cli_prefix = $requirepass ? {
