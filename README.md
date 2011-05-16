@@ -10,7 +10,7 @@ operating systems welcome.
 TODO
 ----
 
-* Describe and configure autocommit memory.
+* Uninstall support.
 * Ability to configure snapshotting intervals.
 * Ability to configure VM and max memory.
 * Unable to create more than one Redis instance on the same machine.
