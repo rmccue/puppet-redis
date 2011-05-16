@@ -1,13 +1,13 @@
-define redis::server($version='2.2.5',
-                     $bind="127.0.0.1",
-                     $port=6379,
-                     $masterip="",
-                     $masterport=6379,
-                     $masterauth="",
-                     $requirepass="",
-                     $aof=false,
-                     $aof_rewrite_hour=3,
-                     $aof_rewrite_minute=30) {
+class redis::server($version='2.2.5',
+                    $bind="127.0.0.1",
+                    $port=6379,
+                    $masterip="",
+                    $masterport=6379,
+                    $masterauth="",
+                    $requirepass="",
+                    $aof=false,
+                    $aof_rewrite_hour=3,
+                    $aof_rewrite_minute=30) {
 
   $bin_dir = '/usr/local/bin'
   $redis_src = "/usr/local/src/redis-${version}"
