@@ -1,4 +1,4 @@
-class redis::server($version='2.2.5',
+class redis::server($version='2.2.7',
                     $bind="127.0.0.1",
                     $port=6379,
                     $masterip="",
