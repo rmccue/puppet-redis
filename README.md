@@ -66,7 +66,7 @@ instance:
       port => 6379,
       masterip => "178.79.120.100",
       masterport => 6379,
-      masterauth => "MY_SUPER_SECRET_PASSORD",
+      masterauth => "MY_SUPER_SECRET_PASSWORD",
     }
 
 By default Redis saves the database to disk through snapshotting. You can
