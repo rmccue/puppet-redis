@@ -1,4 +1,4 @@
-class redis::overcommit($ensure=present {
+class redis::overcommit($ensure=present) {
 
   file { "/etc/sysctl.d/overcommit.conf":
     ensure => $ensure,
