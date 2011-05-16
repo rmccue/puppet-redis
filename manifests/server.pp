@@ -36,23 +36,23 @@ class redis::server($ensure=present,
     require => [Redis::Install[$version], File["/etc/redis"]],
   }
 
-  group { "redis":
-    ensure => $ensure,
-    allowdupe => false,
-  }
-
-  user { "redis":
-    ensure => $ensure,
-    allowdupe => false,
-    home => $redis_home,
-    managehome => true,
-    gid => "redis",
-    shell => "/bin/false",
-    comment => "Redis Server",
-    require => Group["redis"],
-  }
-
   if $ensure == 'present' {
+
+    group { "redis":
+      ensure => $ensure,
+      allowdupe => false,
+    }
+
+    user { "redis":
+      ensure => $ensure,
+      allowdupe => false,
+      home => $redis_home,
+      managehome => true,
+      gid => "redis",
+      shell => "/bin/false",
+      comment => "Redis Server",
+      require => Group["redis"],
+    }
 
     file { [$redis_home, $redis_log]:
       ensure => directory,
@@ -61,6 +61,15 @@ class redis::server($ensure=present,
       require => User["redis"],
     }
   } elsif $ensure == 'absent' {
+
+    group { "redis":
+      ensure => $ensure,
+    }
+
+    user { "redis":
+      ensure => $ensure,
+      before => Group["redis"],
+    }
 
     file { [$redis_home, $redis_log]:
       ensure => $ensure,
