@@ -25,61 +25,36 @@ class redis::server($ensure=present,
   }
 
   file { "/etc/redis":
-    ensure => $ensure ? {
-      'present' => "directory",
-      default => $ensure,
-    },
+    ensure => "directory",
   }
 
   file { "/etc/redis/redis.conf":
+    ensure => $ensure,
     content => template("redis/redis.conf.erb"),
     require => [Redis::Install[$version], File["/etc/redis"]],
   }
 
-  if $ensure == 'present' {
+  group { "redis":
+    ensure => $ensure,
+    allowdupe => false,
+  }
 
-    group { "redis":
-      ensure => $ensure,
-      allowdupe => false,
-    }
+  user { "redis":
+    ensure => $ensure,
+    allowdupe => false,
+    home => $redis_home,
+    managehome => true,
+    gid => "redis",
+    shell => "/bin/false",
+    comment => "Redis Server",
+    require => Group["redis"],
+  }
 
-    user { "redis":
-      ensure => $ensure,
-      allowdupe => false,
-      home => $redis_home,
-      managehome => true,
-      gid => "redis",
-      shell => "/bin/false",
-      comment => "Redis Server",
-      require => Group["redis"],
-    }
-
-    file { [$redis_home, $redis_log]:
-      ensure => directory,
-      owner => "redis",
-      group => "redis",
-      require => User["redis"],
-    }
-  } elsif $ensure == 'absent' {
-
-    group { "redis":
-      ensure => $ensure,
-    }
-
-    user { "redis":
-      ensure => $ensure,
-      before => Group["redis"],
-    }
-
-    file { [$redis_home, $redis_log]:
-      ensure => $ensure,
-      owner => "redis",
-      group => "redis",
-      recurse => true,
-      purge => true,
-      force => true,
-      before => Group["redis"],
-    }
+  file { [$redis_home, $redis_log]:
+    ensure => directory,
+    owner => "redis",
+    group => "redis",
+    require => User["redis"],
   }
 
   file { "/etc/init.d/redis-server":
