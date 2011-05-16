@@ -11,6 +11,7 @@ TODO
 ----
 
 * Actual implementation.
+* Unable to create more than one Redis instance on the same machine.
 
 
 Installation
@@ -40,8 +41,8 @@ the module with this special syntax:
 
     class { "redis::server":
       version => "2.2.7",
-      bind => "127.0.0.1",
-      port => 10100,
+      bind => "178.79.120.100",
+      port => 6379,
       requirepass => "MY_SUPER_SECRET_PASSORD",
     }
 
@@ -59,8 +60,8 @@ instance:
     class { "redis::server":
       version => "2.2.7",
       bind => "127.0.0.1",
-      port => 10101,
-      masterip => "127.0.0.1",
-      masterport => 10100,
+      port => 6379,
+      masterip => "178.79.120.100",
+      masterport => 6379,
       masterauth => "MY_SUPER_SECRET_PASSORD",
     }
