@@ -10,7 +10,6 @@ operating systems welcome.
 TODO
 ----
 
-* Test the module.
 * Describe and configure autocommit memory.
 * Ability to configure snapshotting intervals.
 * Ability to configure VM and max memory.
