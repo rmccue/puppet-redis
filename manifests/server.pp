@@ -66,7 +66,7 @@ class redis::server($version='2.2.7',
     subscribe => [File["/etc/init.d/redis-server"],
                   File["/etc/redis/redis.conf"],
                   Redis::Install[$version],
-                  Class[redis::overcommit]],
+                  Class["redis::overcommit"]],
   }
 
   $redis_cli_prefix = $requirepass ? {
