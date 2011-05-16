@@ -67,17 +67,17 @@ class redis::server($version='2.2.5',
   }
 
   file { "/etc/redis/redis.conf":
-    content => template("redis_server/redis.conf.erb"),
+    content => template("redis/redis.conf.erb"),
     require => [Exec["install redis ${version}"], File["/etc/redis"]],
   }
 
   file { "/etc/init.d/redis-server":
-    source => "puppet:///modules/redis_server/redis-server.init",
+    source => "puppet:///modules/redis/redis-server.init",
     mode => 744,
   }
 
   file { "/etc/logrotate.d/redis-server":
-    source => "puppet:///modules/redis_server/redis-server.logrotate",
+    source => "puppet:///modules/redis/redis-server.logrotate",
   }
 
   service { "redis-server":
