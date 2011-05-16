@@ -10,7 +10,9 @@ operating systems welcome.
 TODO
 ----
 
-* Actual implementation.
+* Describe and configure autocommit memory.
+* Ability to configure snapshotting intervals.
+* Ability to configure VM and max memory.
 * Unable to create more than one Redis instance on the same machine.
 
 
@@ -65,3 +67,14 @@ instance:
       masterport => 6379,
       masterauth => "MY_SUPER_SECRET_PASSORD",
     }
+
+By default Redis saves the database to disk through snapshotting. You can
+enable AOF in stead and the when it will run an AOF compaction from cron:
+
+    class { "redis::server":
+      version => "2.2.7",
+      aof => true,
+      aof_rewrite_hour => "0-23/2",
+      aof_rewrite_minute => 15,
+    }
+
