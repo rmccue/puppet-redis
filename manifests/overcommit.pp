@@ -1,4 +1,4 @@
-class redis:overcommit {
+class redis::overcommit {
 
   file { "/etc/sysctl.d/overcommit.conf":
     content => "vm.overcommit_memory=1",
