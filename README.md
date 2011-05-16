@@ -54,7 +54,7 @@ the module with this special syntax:
       version => "2.2.7",
       bind => "178.79.120.100",
       port => 6379,
-      requirepass => "MY_SUPER_SECRET_PASSORD",
+      requirepass => "MY_SUPER_SECRET_PASSWORD",
     }
 
 You can also configure a slave which connects to another Redis master
