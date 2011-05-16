@@ -10,7 +10,6 @@ operating systems welcome.
 TODO
 ----
 
-* Uninstall support.
 * Ability to configure snapshotting intervals.
 * Ability to configure VM and max memory.
 * Unable to create more than one Redis instance on the same machine.
