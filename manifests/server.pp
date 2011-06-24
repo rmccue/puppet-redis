@@ -128,8 +128,8 @@ class redis::server($ensure=present,
   }
 
   $redis_cli_prefix = $requirepass ? {
-      "" => "redis-cli -h $bind -p $port",
-      default => "redis-cli -h $bind -p $port -a '${requirepass}'",
+      "" => "/usr/local/bin/redis-cli -h $bind -p $port",
+      default => "/usr/local/bin/redis-cli -h $bind -p $port -a '${requirepass}'",
   }
 
   if $aof {
