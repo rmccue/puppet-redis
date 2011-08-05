@@ -11,14 +11,13 @@ TODO
 ----
 
 * Ability to configure snapshotting intervals.
-* Ability to configure VM and max memory.
-* Unable to create more than one Redis instance on the same machine.
+* Ability to configure the slow log.
 
 
 Installation
 ------------
 
-Clone this repo to a postgresql directory under your Puppet
+Clone this repo to a redis directory under your Puppet
 modules directory:
 
     git clone git://github.com/uggedal/puppet-module-redis.git redis
@@ -45,11 +44,11 @@ should ideally be placed in `manifests/site.pp`:
       path => "/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin",
     }
 
-You can override defaults in the PostgreSQL config by including
+You can override defaults in the Redis config by including
 the module with this special syntax:
 
     class { "redis::server":
-      version => "2.2.7",
+      version => "2.4.0",
       bind => "178.79.120.100",
       port => 6379,
       requirepass => "MY_SUPER_SECRET_PASSWORD",
@@ -59,7 +58,6 @@ You can also configure a slave which connects to another Redis master
 instance:
 
     class { "redis::server":
-      version => "2.2.7",
       bind => "127.0.0.1",
       port => 6379,
       masterip => "178.79.120.100",
@@ -68,12 +66,8 @@ instance:
     }
 
 By default Redis saves the database to disk through snapshotting. You can
-enable AOF in stead and the when it will run an AOF compaction from cron:
+enable AOF in stead:
 
     class { "redis::server":
-      version => "2.2.7",
       aof => true,
-      aof_rewrite_hour => "0-23/2",
-      aof_rewrite_minute => 15,
     }
-

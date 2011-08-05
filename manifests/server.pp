@@ -1,5 +1,6 @@
 class redis::server($ensure=present,
-                    $version='2.2.7',
+                    $version='2.3.8',
+                    $tar_version="2.4.0-rc5",
                     $bind="127.0.0.1",
                     $port=6379,
                     $masterip="",
@@ -7,8 +8,8 @@ class redis::server($ensure=present,
                     $masterauth="",
                     $requirepass="",
                     $aof=false,
-                    $aof_rewrite_hour=3,
-                    $aof_rewrite_minute=30) {
+                    $aof_auto_rewrite_percentage=100,
+                    $aof_auto_rewrite_min_size="64mb") {
 
   $is_present = $ensure == "present"
   $is_absent = $ensure == "absent"
@@ -23,6 +24,7 @@ class redis::server($ensure=present,
   redis::install { $version:
     ensure => $ensure,
     bin_dir => $bin_dir,
+    tar_version => $tar_version,
   }
 
   file { "/etc/redis":
@@ -125,20 +127,5 @@ class redis::server($ensure=present,
       'absent' => [User["redis"], File["/etc/init.d/redis-server"]],
       default => undef,
     },
-  }
-
-  $redis_cli_prefix = $requirepass ? {
-      "" => "/usr/local/bin/redis-cli -h $bind -p $port",
-      default => "/usr/local/bin/redis-cli -h $bind -p $port -a '${requirepass}'",
-  }
-
-  if $aof {
-    cron { "rewrite-aof":
-      ensure => $ensure,
-      command => "$redis_cli_prefix BGREWRITEAOF > /dev/null",
-      hour => $aof_rewrite_hour,
-      minute => $aof_rewrite_minute,
-      require => Service["redis-server"],
-    }
   }
 }
