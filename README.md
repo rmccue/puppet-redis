@@ -44,6 +44,13 @@ should ideally be placed in `manifests/site.pp`:
       path => "/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin",
     }
 
+You'll also need to make a virtual package resource for the build
+dependencies:
+
+    @package { $redis::install::dependencies:
+      ensure => present,
+    }
+
 You can override defaults in the Redis config by including
 the module with this special syntax:
 

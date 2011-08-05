@@ -6,11 +6,10 @@ define redis::install($ensure=present, $bin_dir="", $tar_version=undef) {
     $tar_version = $version
   }
 
+  $dependencies = ["build-essential"]
+
   if $ensure == 'present' {
-    @package { "build-essential":
-      ensure => $ensure,
-    }
-    realize(Package["build-essential"])
+    realize(Package[$dependencies])
 
     file { $redis_src:
       ensure => "directory",
@@ -27,7 +26,7 @@ define redis::install($ensure=present, $bin_dir="", $tar_version=undef) {
       command => "make && /etc/init.d/redis-server stop && make install PREFIX=/usr/local",
       cwd => "${redis_src}/src",
       unless => "test `redis-server --version | cut -d ' ' -f 4` = '${version}'",
-      require => [Exec["fetch redis ${version}"], Package["build-essential"]]
+      require => [Exec["fetch redis ${version}"], Package[$dependencies]]
     }
 
   } elsif $ensure == 'absent' {
