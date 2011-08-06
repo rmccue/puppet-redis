@@ -9,7 +9,6 @@ define redis::install($ensure=present, $bin_dir="", $tar_version=undef) {
   $dependencies = ["build-essential"]
 
   if $ensure == 'present' {
-    realize(Package[$dependencies])
 
     file { $redis_src:
       ensure => "directory",

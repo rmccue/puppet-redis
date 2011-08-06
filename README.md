@@ -44,10 +44,9 @@ should ideally be placed in `manifests/site.pp`:
       path => "/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin",
     }
 
-You'll also need to make a virtual package resource for the build
-dependencies:
+You'll also need to install some build dependencies:
 
-    @package { $redis::install::dependencies:
+    package { $redis::install::dependencies:
       ensure => present,
     }
 
