@@ -46,7 +46,8 @@ should ideally be placed in `manifests/site.pp`:
 
 You'll also need to install some build dependencies:
 
-    package { $redis::install::dependencies:
+    include redis::dependencies
+    package { $redis::dependencies::packages:
       ensure => present,
     }
 
