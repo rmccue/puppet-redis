@@ -1,4 +1,6 @@
 define redis::install($ensure=present, $bin_dir="", $tar_version=undef) {
+  include redis::dependencies
+
   $version = $name
   $redis_src = "/usr/local/src/redis-${version}"
 
