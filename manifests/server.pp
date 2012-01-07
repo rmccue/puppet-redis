@@ -1,5 +1,5 @@
 class redis::server($ensure=present,
-                    $version='2.4.4',
+                    $version='2.4.5',
                     $tar_version="2.4.4",
                     $bind="127.0.0.1",
                     $port=6379,
