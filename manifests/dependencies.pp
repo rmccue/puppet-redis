@@ -1,3 +1,3 @@
 class redis::dependencies {
-  $packages = ["build-essential", "curl"]
+  $packages = ["build-essential", "curl", "make"]
 }

@@ -14,11 +14,15 @@ define redis::install($ensure=present, $bin_dir="", $tar_version=undef) {
       ensure => "directory",
     }
 
+    package {'curl':
+      ensure => installed
+    }
+
     exec { "fetch redis ${version}": 
       command => "curl -sL https://github.com/antirez/redis/tarball/${tar_version} | tar --strip-components 1 -xz",
       cwd => $redis_src,
       creates => "${redis_src}/Makefile",
-      require => File[$redis_src],
+      require => [File[$redis_src], Package[$redis::dependencies::packages]],
     }
 
     exec { "install redis ${version}":
